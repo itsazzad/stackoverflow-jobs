@@ -4,29 +4,48 @@ $keys = 'category';
 $rsss=array(
 	"http://stackoverflow.com/jobs/feed?".$_SERVER['QUERY_STRING']
 );
-	$result = array();
-	foreach($rsss as $rss){
-		echo $rss;
-		echo "<br />";
-		$file =  simplexml_load_string(file_get_contents($rss));
-		foreach ($file->children() as $child) {
-			foreach ($child as $key => $value) {
-				if(!empty($value)){
-					foreach ($value->{$keys} as $index => $value) {
-						if(!empty($result["$value"])){
-							$result["$value"] = $result["$value"]+1;
-						} else {
-							$result["$value"] = 1;
-						}
-						$array_sum++;
-					}
-				}
+$result = array();
+$jobs = array();
+foreach($rsss as $rss){
+//	echo $rss;
+//	echo "<br />";
+	$file =  simplexml_load_string(file_get_contents($rss));
+    foreach ($file->channel->item as $i => $item) {
+        if(!empty($item)){
+            foreach ($item->category as $c => $category) {
+                $category = (string)$category;
+                if(!empty($result[$category])){
+                    $result[$category] = $result[$category]+1;
+                } else {
+                    $result[$category] = 1;
+                }
+            }
+        }
+    }
+    foreach ($file->channel->item as $i => $item) {
+        if(!empty($item)){
+            $job = array(
+                'title'   => (string)$item->title,
+                'link'   => (string)$item->link,
+                'weight' => 0
+            );
+            foreach ($item->category as $c => $category) {
+                $category = (string)$category;
+                if(!empty($result[$category])){
+                    $job['weight'] = $job['weight'] + $result[$category];
+                }
+            }
+            $jobs[] = $job;
+        }
+    }
 
-			}
-		}
+}
 
-	}
+function cmp($a, $b) {
+    return $b['weight'] - $a['weight'];
+}
 
+usort($jobs,"cmp");
 
 function getRandomWeightedElement(array $weightedValues, $array_sum=NULL) {
 	if($array_sum==NULL){
@@ -105,6 +124,11 @@ echo "<br />";
 echo "<br />";
 ?>
 <?php
+foreach($jobs as $j => $job){
+    ?>
+    <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>" target="_blank"><?php echo $job['title']; ?></a></li>
+    <?php
+}
 foreach($result as $skill => $weight){
 	?>
 	<li><a href="./?tl=<?php echo urlencode($skill); ?>"><?php echo "[".$skill."] => ".$weight; ?></a></li>
