@@ -1,10 +1,11 @@
 <?php
-$array_sum=0;
+$num_skills=0;
+$num_jobs=0;
 $keys = 'category';
 $rsss=array(
 	"http://stackoverflow.com/jobs/feed?".$_SERVER['QUERY_STRING']
 );
-$result = array();
+$skills = array();
 $jobs = array();
 foreach($rsss as $rss){
 //	echo $rss;
@@ -14,12 +15,14 @@ foreach($rsss as $rss){
         if(!empty($item)){
             foreach ($item->category as $c => $category) {
                 $category = (string)$category;
-                if(!empty($result[$category])){
-                    $result[$category] = $result[$category]+1;
+                if(!empty($skills[$category])){
+                    $skills[$category] = $skills[$category]+1;
                 } else {
-                    $result[$category] = 1;
+                    $skills[$category] = 1;
                 }
+                $num_skills++;
             }
+            $num_jobs++;
         }
     }
     foreach ($file->channel->item as $i => $item) {
@@ -31,8 +34,8 @@ foreach($rsss as $rss){
             );
             foreach ($item->category as $c => $category) {
                 $category = (string)$category;
-                if(!empty($result[$category])){
-                    $job['weight'] = $job['weight'] + $result[$category];
+                if(!empty($skills[$category])){
+                    $job['weight'] = $job['weight'] + $skills[$category];
                 }
             }
             $jobs[] = $job;
@@ -47,12 +50,12 @@ function cmp($a, $b) {
 
 usort($jobs,"cmp");
 
-function getRandomWeightedElement(array $weightedValues, $array_sum=NULL) {
-	if($array_sum==NULL){
-		$array_sum=(int) array_sum($weightedValues);
+function getRandomWeightedElement(array $weightedValues, $num_skills=NULL) {
+	if($num_skills==NULL){
+		$num_skills=(int) array_sum($weightedValues);
 	}else{
 	}
-	$rand = mt_rand(1, $array_sum);
+	$rand = mt_rand(1, $num_skills);
 
 	foreach ($weightedValues as $key => $value) {
 		$rand -= $value;
@@ -61,7 +64,28 @@ function getRandomWeightedElement(array $weightedValues, $array_sum=NULL) {
 		}
 	}
 }
-arsort($result, SORT_NUMERIC);
+arsort($skills, SORT_NUMERIC);
+
+function printJobs(){
+    global $jobs;
+    global $num_jobs;
+    echo "[{( " . $num_jobs . " )}]\n";
+    foreach($jobs as $j => $job){
+        ?>
+        <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>" target="_blank"><?php echo $job['title']; ?></a></li>
+        <?php
+    }
+}
+function printSkills(){
+    global $skills;
+    global $num_skills;
+    echo "[{( " . $num_skills . " )}]\n";
+    foreach($skills as $skill => $weight){
+        ?>
+        <li><a href="./?tl=<?php echo urlencode($skill); ?>"><?php echo "[".$skill."] => ".$weight; ?></a></li>
+        <?php
+    }
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -116,25 +140,18 @@ ul{
     </ul>
 
 <?php
-echo "[{( " . $array_sum . " )}]\n";
-$picked1=getRandomWeightedElement($result, $array_sum);
-echo "({[ " . $picked1 . ":" . $result[$picked1] . " ]})\n";
+$picked1=getRandomWeightedElement($skills, $num_skills);
+echo "({[ " . $picked1 . ":" . $skills[$picked1] . " ]})\n";
 echo "<br />";
-//print_r($result);
+//print_r($skills);
 echo "<br />";
-?>
-<?php
-foreach($jobs as $j => $job){
-    ?>
-    <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>" target="_blank"><?php echo $job['title']; ?></a></li>
-    <?php
-}
-foreach($result as $skill => $weight){
-	?>
-	<li><a href="./?tl=<?php echo urlencode($skill); ?>"><?php echo "[".$skill."] => ".$weight; ?></a></li>
-    <?php
+if(count($jobs)>count($skills)){
+    printSkills();
+    printJobs();
+}else{
+    printJobs();
+    printSkills();
 }
 ?>
-
 </body>
 </html>
