@@ -7,6 +7,7 @@ $rsss=array(
 );
 $skills = array();
 $jobs = array();
+$thesaurus = array();
 foreach($rsss as $rss){
 //	echo $rss;
 //	echo "<br />";
@@ -14,7 +15,7 @@ foreach($rsss as $rss){
     foreach ($file->channel->item as $i => $item) {
         if(!empty($item)){
             foreach ($item->category as $c => $category) {
-                $category = (string)$category;
+                $category = getUniqueName((string)$category);
                 if(!empty($skills[$category])){
                     $skills[$category] = $skills[$category]+1;
                 } else {
@@ -33,7 +34,7 @@ foreach($rsss as $rss){
                 'weight' => 0
             );
             foreach ($item->category as $c => $category) {
-                $category = (string)$category;
+                $category = getUniqueName((string)$category);
                 if(!empty($skills[$category])){
                     $job['weight'] = $job['weight'] + $skills[$category];
                 }
@@ -42,6 +43,21 @@ foreach($rsss as $rss){
         }
     }
 
+}
+
+function getUniqueName($subject){
+    global $thesaurus;
+    $synonym = preg_replace("/\d+$/","", str_replace(['js', '-', '.'], "", $subject));
+    if(array_key_exists($subject, $thesaurus)){
+        if(array_key_exists($subject, $thesaurus[$synonym])){
+            $thesaurus[$synonym][$subject] = $thesaurus[$synonym][$subject]++;
+        }else{
+            $thesaurus[$synonym][$subject] = 1;
+        }
+    }else{
+        $thesaurus[$synonym][$subject] = 1;
+    }
+    return $synonym;
 }
 
 function cmp($a, $b) {
@@ -65,6 +81,18 @@ function getRandomWeightedElement(array $weightedValues, $num_skills=NULL) {
 	}
 }
 arsort($skills, SORT_NUMERIC);
+
+function printSynonyms(){
+    global $thesaurus;
+    foreach ($thesaurus as $skill => $synonyms) {
+        if(count($synonyms)>1){
+            echo '<pre>';
+            echo $skill.': ';
+            print_r($synonyms);
+            echo '</pre>';
+        }
+    }
+}
 
 function printJobs(){
     global $jobs;
@@ -136,10 +164,19 @@ ul{
                 <li><a href="./?ms=Lead&mxs=Manager">Lead&gt;</a></li>
                 <li><a href="./?ms=Manager&mxs=Manager">Manager&gt;</a></li>
             </ul>
+            <ul>
+                <li><a href="./?tl=javascript">JavaScript</a></li>
+                <li><a href="./?tl=angularjs">AngularJS</a></li>
+            </ul>
+            <ul>
+                <li><a href="./?sort=y&s=180000&c=USD&tl=">$180,000</a></li>
+                <li><a href="./?sort=y&s=150000&c=USD&tl=">$150,000</a></li>
+            </ul>
         </li>
     </ul>
 
 <?php
+printSynonyms();
 $picked1=getRandomWeightedElement($skills, $num_skills);
 echo "({[ " . $picked1 . ":" . $skills[$picked1] . " ]})\n";
 echo "<br />";
