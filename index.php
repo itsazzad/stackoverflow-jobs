@@ -15,7 +15,7 @@ foreach ($rsss as $rss) {
     foreach ($file->channel->item as $i => $item) {
         if (!empty($item)) {
             foreach ($item->category as $c => $category) {
-                $category = getUniqueName((string)$category);
+                $category = setUniqueName((string)$category);
                 if (!empty($skills[$category])) {
                     $skills[$category] = $skills[$category] + 1;
                 } else {
@@ -45,11 +45,11 @@ foreach ($rsss as $rss) {
 
 }
 
-function getUniqueName($subject)
+function setUniqueName($subject)
 {
     global $thesaurus;
-    $synonym = preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
-    if (array_key_exists($subject, $thesaurus)) {
+    $synonym = getUniqueName($subject);
+    if (array_key_exists($synonym, $thesaurus)) {
         if (array_key_exists($subject, $thesaurus[$synonym])) {
             $thesaurus[$synonym][$subject] = $thesaurus[$synonym][$subject] + 1;
         } else {
@@ -59,6 +59,10 @@ function getUniqueName($subject)
         $thesaurus[$synonym][$subject] = 1;
     }
     return $synonym;
+}
+function getUniqueName($subject)
+{
+    return preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
 }
 
 function cmp($a, $b)
@@ -106,8 +110,7 @@ function printJobs()
     echo "[{( " . $num_jobs . " )}]\n";
     foreach ($jobs as $j => $job) {
         ?>
-        <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>"
-                                                                              target="_blank"><?php echo $job['title']; ?></a>
+        <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>"><?php echo $job['title']; ?></a>
         </li>
         <?php
     }
