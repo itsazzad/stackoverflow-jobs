@@ -60,6 +60,7 @@ function setUniqueName($subject)
     }
     return $synonym;
 }
+
 function getUniqueName($subject)
 {
     return preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
@@ -110,7 +111,8 @@ function printJobs()
     echo "[{( " . $num_jobs . " )}]\n";
     foreach ($jobs as $j => $job) {
         ?>
-        <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a href="<?php echo $job['link']; ?>"><?php echo $job['title']; ?></a>
+        <li>[<?php echo str_pad($job['weight'], 4, "0", STR_PAD_LEFT); ?>] <a
+                    href="<?php echo $job['link']; ?>"><?php echo $job['title']; ?></a>
         </li>
         <?php
     }
@@ -138,6 +140,21 @@ function printSkills()
     <style>
         ul {
             padding: 5px 5px;
+        }
+
+        a:link {
+            color: #00f;
+            text-decoration: none;
+        }
+
+        a:visited {
+            color: #f00;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0f0;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -445,21 +462,38 @@ function printSkills()
             </li>
         </ul>
         <ul>
-            <li><a href="./?sort=y&ms=Student&mxs=Student">&gt;Student</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Junior">&gt;Junior</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=MidLevel">&gt;MidLevel</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Senior">&gt;Senior</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Lead">&gt;Lead</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Manager">&gt;Manager</a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=Student"><strong>Student</strong></a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=Junior">Student ⋯ Junior</a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=MidLevel">Student ⋯ MidLevel</a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=Senior">Student ⋯ Senior</a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=Lead">Student ⋯ Lead</a></li>
+            <li><a href="./?sort=y&ms=Student&mxs=Manager">Student ⋯ Manager</a></li>
         </ul>
         <ul>
-            <li><a href="./?sort=y&ms=Student&mxs=Manager">Student&gt;</a></li>
-            <li><a href="./?sort=y&ms=Junior&mxs=Manager">Junior&gt;</a></li>
-            <li><a href="./?sort=y&ms=MidLevel&mxs=Manager">MidLevel&gt;</a></li>
-            <li><a href="./?sort=y&ms=Senior&mxs=Manager">Senior&gt;</a></li>
-            <li><a href="./?sort=y&ms=Lead&mxs=Manager">Lead&gt;</a></li>
+            <li><a href="./?sort=y&ms=Junior&mxs=Junior"><strong>Junior</strong></a></li>
+            <li><a href="./?sort=y&ms=Junior&mxs=MidLevel">Junior ⋯ MidLevel</a></li>
+            <li><a href="./?sort=y&ms=Junior&mxs=Senior">Junior ⋯ Senior</a></li>
+            <li><a href="./?sort=y&ms=Junior&mxs=Lead">Junior ⋯ Lead</a></li>
+            <li><a href="./?sort=y&ms=Junior&mxs=Manager">Junior ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=y&ms=MidLevel&mxs=MidLevel"><strong>MidLevel</strong></a></li>
+            <li><a href="./?sort=y&ms=MidLevel&mxs=Senior">MidLevel ⋯ Senior</a></li>
+            <li><a href="./?sort=y&ms=MidLevel&mxs=Lead">MidLevel ⋯ Lead</a></li>
+            <li><a href="./?sort=y&ms=MidLevel&mxs=Manager">MidLevel ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=y&ms=Senior&mxs=Senior"><strong>Senior</strong></a></li>
+            <li><a href="./?sort=y&ms=Senior&mxs=Lead">Senior ⋯ Lead</a></li>
+            <li><a href="./?sort=y&ms=Senior&mxs=Manager">Senior ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=y&ms=Lead&mxs=Lead"><strong>Lead</strong></a></li>
+            <li><a href="./?sort=y&ms=Lead&mxs=Manager">Lead ⋯ Manager</a></li>
+        </ul>
+        <ul>
             <li>
-                <a href="./?sort=y&ms=Manager&mxs=Manager">Manager&gt;</a>
+                <a href="./?sort=y&ms=Manager&mxs=Manager"><strong>Manager</strong></a>
                 <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
             </li>
         </ul>
