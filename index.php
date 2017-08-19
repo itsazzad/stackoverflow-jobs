@@ -436,7 +436,7 @@ function printSkills()
             ?>
         </ul>
         <ul>
-            <li><a href="./?sort=y&s=17500&c=USD&tl=">$175,000</a></li>
+            <li><a href="./?sort=y&s=175000&c=USD&tl=">$175,000</a></li>
             <li>
                 <a href="./?sort=y&s=150000&c=USD&tl=">$150,000</a>
                 <sup><a href="./?sort=y&tl=node">node</a></sup>
