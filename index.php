@@ -142,23 +142,304 @@ function printSkills()
 <body>
 <ul>
     <li>
-        <a href="./">All</a>
+        <a href="./">All</a><sup><a href="./?sort=y&tl=java">java</a></sup>
+        <?php
+        $countries = [
+//            "Afghanistan" => [],
+//            "Åland" => [],
+//            "Albania" => [],
+//            "Algeria" => [],
+//            "American Samoa" => [],
+//            "Andorra" => [],
+//            "Angola" => [],
+//            "Anguilla" => [],
+//            "Antarctica" => [],
+//            "Antigua and Barbuda" => [],
+            "Argentina" => [],
+//            "Armenia" => [],
+//            "Aruba" => [],
+            "Australia" => ['linux', 'agile', 'rubyonrails'],
+            "Austria" => [],
+//            "Azerbaijan" => [],
+//            "Bahamas" => [],
+//            "Bahrain" => [],
+            "Bangladesh" => [],
+//            "Barbados" => [],
+//            "Belarus" => [],
+            "Belgium" => [],
+//            "Belize" => [],
+//            "Benin" => [],
+//            "Bermuda" => [],
+//            "Bhutan" => [],
+//            "Bolivia" => [],
+//            "Bonaire" => [],
+//            "Bosnia and Herzegovina" => [],
+//            "Botswana" => [],
+//            "Bouvet Island" => [],
+//            "Brazil" => [],
+//            "British Indian Ocean Territory" => [],
+//            "British Virgin Islands" => [],
+//            "Brunei" => [],
+            "Bulgaria" => [],
+//            "Burkina Faso" => [],
+//            "Burundi" => [],
+//            "Cambodia" => [],
+//            "Cameroon" => [],
+            "Canada" => [],
+//            "Cape Verde" => [],
+//            "Cayman Islands" => [],
+//            "Central African Republic" => [],
+//            "Chad" => [],
+//            "Chile" => [],
+            "China" => [],
+//            "Christmas Island" => [],
+//            "Cocos [Keeling] Islands" => [],
+//            "Colombia" => [],
+//            "Comoros" => [],
+//            "Cook Islands" => [],
+//            "Costa Rica" => [],
+//            "Croatia" => [],
+//            "Cuba" => [],
+//            "Curacao" => [],
+//            "Cyprus" => [],
+            "Czechia" => [],
+//            "Democratic Republic of the Congo" => [],
+            "Denmark" => ['java'],
+//            "Djibouti" => [],
+//            "Dominica" => [],
+//            "Dominican Republic" => [],
+//            "East Timor" => [],
+//            "Ecuador" => [],
+//            "Egypt" => [],
+//            "El Salvador" => [],
+//            "Equatorial Guinea" => [],
+//            "Eritrea" => [],
+            "Estonia" => ['java', 'mysql', 'postgresql'],
+//            "Ethiopia" => [],
+//            "Falkland Islands" => [],
+//            "Faroe Islands" => [],
+//            "Fiji" => [],
+            "Finland" => ['python'],
+            "France" => [],
+//            "French Guiana" => [],
+//            "French Polynesia" => [],
+//            "French Southern Territories" => [],
+//            "Gabon" => [],
+//            "Gambia" => [],
+//            "Georgia" => [],
+            "Germany" => ['java'],
+//            "Ghana" => [],
+//            "Gibraltar" => [],
+//            "Greece" => [],
+//            "Greenland" => [],
+//            "Grenada" => [],
+//            "Guadeloupe" => [],
+//            "Guam" => [],
+//            "Guatemala" => [],
+//            "Guernsey" => [],
+//            "Guinea-Bissau" => [],
+//            "Guinea" => [],
+//            "Guyana" => [],
+//            "Haiti" => [],
+//            "Heard Island and McDonald Islands" => [],
+//            "Honduras" => [],
+            "Hong Kong" => ['java'],
+//            "Hungary" => [],
+//            "Iceland" => [],
+            "India" => [],
+            "Indonesia" => ['react'],
+//            "Iran" => [],
+//            "Iraq" => [],
+            "Ireland" => ['go'],
+//            "Isle of Man" => [],
+//            "Israel" => [],
+            "Italy" => [],
+//            "Ivory Coast" => [],
+//            "Jamaica" => [],
+            "Japan" => ['java'],
+//            "Jersey" => [],
+//            "Jordan" => [],
+//            "Kazakhstan" => [],
+//            "Kenya" => [],
+//            "Kiribati" => [],
+//            "Kosovo" => [],
+//            "Kuwait" => [],
+//            "Kyrgyzstan" => [],
+//            "Laos" => [],
+//            "Latvia" => [],
+//            "Lebanon" => [],
+//            "Lesotho" => [],
+            "Liberia" => [],
+//            "Libya" => [],
+//            "Liechtenstein" => [],
+//            "Lithuania" => [],
+//            "Luxembourg" => [],
+//            "Macao" => [],
+//            "Macedonia" => [],
+//            "Madagascar" => [],
+//            "Malawi" => [],
+            "Malaysia" => ['javascript'],
+//            "Maldives" => [],
+//            "Mali" => [],
+//            "Malta" => [],
+//            "Marshall Islands" => [],
+//            "Martinique" => [],
+//            "Mauritania" => [],
+//            "Mauritius" => [],
+//            "Mayotte" => [],
+//            "Mexico" => [],
+//            "Micronesia" => [],
+//            "Moldova" => [],
+//            "Monaco" => [],
+//            "Mongolia" => [],
+//            "Montenegro" => [],
+//            "Montserrat" => [],
+//            "Morocco" => [],
+//            "Mozambique" => [],
+//            "Myanmar [Burma]" => [],
+//            "Namibia" => [],
+//            "Nauru" => [],
+//            "Nepal" => [],
+            "Netherlands" => ['java'],
+//            "New Caledonia" => [],
+            "New Zealand" => [],
+//            "Nicaragua" => [],
+//            "Niger" => [],
+//            "Nigeria" => [],
+//            "Niue" => [],
+//            "Norfolk Island" => [],
+//            "North Korea" => [],
+//            "Northern Mariana Islands" => [],
+//            "Norway" => [],
+//            "Oman" => [],
+//            "Pakistan" => [],
+//            "Palau" => [],
+//            "Palestine" => [],
+//            "Panama" => [],
+//            "Papua New Guinea" => [],
+//            "Paraguay" => [],
+//            "Peru" => [],
+//            "Philippines" => [],
+//            "Pitcairn Islands" => [],
+            "Poland" => ['c++'],
+//            "Portugal" => [],
+//            "Puerto Rico" => [],
+//            "Qatar" => [],
+//            "Republic of the Congo" => [],
+//            "Réunion" => [],
+//            "Romania" => [],
+//            "Russia" => [],
+//            "Rwanda" => [],
+//            "Saint Barthélemy" => [],
+//            "Saint Helena" => [],
+//            "Saint Kitts and Nevis" => [],
+//            "Saint Lucia" => [],
+//            "Saint Martin" => [],
+//            "Saint Pierre and Miquelon" => [],
+//            "Saint Vincent and the Grenadines" => [],
+//            "Samoa" => [],
+//            "San Marino" => [],
+//            "São Tomé and Príncipe" => [],
+//            "Saudi Arabia" => [],
+//            "Senegal" => [],
+//            "Serbia" => [],
+//            "Seychelles" => [],
+            "Sierra Leone" => [],
+            "Singapore" => ['java'],
+//            "Sint Maarten" => [],
+//            "Slovakia" => [],
+//            "Slovenia" => [],
+//            "Solomon Islands" => [],
+//            "Somalia" => [],
+//            "South Africa" => [],
+//            "South Georgia and the South Sandwich Islands" => [],
+            "South Korea" => [],
+//            "South Sudan" => [],
+            "Spain" => ['java', 'linux'],
+//            "Sri Lanka" => [],
+//            "Sudan" => [],
+//            "Suriname" => [],
+//            "Svalbard and Jan Mayen" => [],
+//            "Swaziland" => [],
+            "Sweden" => ['c++'],
+            "Switzerland" => [],
+//            "Syria" => [],
+            "Taiwan" => [],
+//            "Tajikistan" => [],
+//            "Tanzania" => [],
+            "Thailand" => ['c#'],
+//            "Togo" => [],
+//            "Tokelau" => [],
+//            "Tonga" => [],
+//            "Trinidad and Tobago" => [],
+//            "Tunisia" => [],
+            "Turkey" => [],
+//            "Turkmenistan" => [],
+//            "Turks and Caicos Islands" => [],
+//            "Tuvalu" => [],
+//            "U.S. Minor Outlying Islands" => [],
+//            "U.S. Virgin Islands" => [],
+//            "Uganda" => [],
+//            "Ukraine" => [],
+            "United Arab Emirates" => [],
+            "United Kingdom" => ['javascript'],
+            "United States" => ['java'],
+//            "Uruguay" => [],
+//            "Uzbekistan" => [],
+//            "Vanuatu" => [],
+//            "Vatican City" => [],
+//            "Venezuela" => [],
+//            "Vietnam" => [],
+//            "Wallis and Futuna" => [],
+//            "Western Sahara" => [],
+//            "Yemen" => [],
+//            "Zambia" => [],
+//            "Zimbabwe" => [],
+        ];
+        ?>
         <ul>
-            <li><a href="./?sort=y&l=Bangladesh&d=100">Bangladesh</a></li>
-            <li><a href="./?sort=y&l=Thailand&d=100">Thailand</a></li>
-            <li><a href="./?sort=y&l=Malaysia&d=100">Malaysia</a></li>
-            <li><a href="./?sort=y&l=Singapore&d=100">Singapore</a></li>
-            <li><a href="./?sort=y&l=Indonesia&d=100">Indonesia</a></li>
+            <?php
+            foreach ($countries as $country => $techs) {
+                ?>
+                <li>
+                    <a href="./?sort=y&l=<?php echo $country; ?>"><?php echo $country; ?></a>
+                    <?php
+                    foreach ($techs as $tech) {
+                        ?>
+                        <sup><a href="./?sort=y&tl=<?php echo urlencode($tech); ?>"><?php echo $tech; ?></a></sup>
+                        <?php
+                    }
+                    ?>
+                </li>
+                <?php
+            }
+            ?>
         </ul>
         <ul>
-            <li><a href="./?sort=y&s=180000&c=USD&tl=">$175,000</a></li>
-            <li><a href="./?sort=y&s=150000&c=USD&tl=">$150,000</a></li>
-            <li><a href="./?sort=y&e=True">Offers Equity</a></li>
+            <li><a href="./?sort=y&s=17500&c=USD&tl=">$175,000</a></li>
+            <li>
+                <a href="./?sort=y&s=150000&c=USD&tl=">$150,000</a>
+                <sup><a href="./?sort=y&tl=node">node</a></sup>
+                <sup><a href="./?sort=y&tl=go">go</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=y&e=True">Offers Equity</a>
+                <sup><a href="./?sort=y&tl=python">python</a></sup>
+            </li>
         </ul>
         <ul>
-            <li><a href="./?sort=y&r=True">Offers Remote</a></li>
-            <li><a href="./?sort=y&v=True">Visa Sponsorship</a></li>
-            <li><a href="./?sort=y&t=True">Offers Relocation</a></li>
+            <li>
+                <a href="./?sort=y&r=True">Offers Remote</a>
+                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=y&v=True">Visa Sponsorship</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=y&t=True">Offers Relocation</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
         </ul>
         <ul>
             <li><a href="./?sort=y&ms=Student&mxs=Student">&gt;Student</a></li>
@@ -174,34 +455,63 @@ function printSkills()
             <li><a href="./?sort=y&ms=MidLevel&mxs=Manager">MidLevel&gt;</a></li>
             <li><a href="./?sort=y&ms=Senior&mxs=Manager">Senior&gt;</a></li>
             <li><a href="./?sort=y&ms=Lead&mxs=Manager">Lead&gt;</a></li>
-            <li><a href="./?sort=y&ms=Manager&mxs=Manager">Manager&gt;</a></li>
+            <li>
+                <a href="./?sort=y&ms=Manager&mxs=Manager">Manager&gt;</a>
+                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
+            </li>
         </ul>
         <ul>
-            <li><a href="./?sort=y&dr=BackendDeveloper">Backend Developer</a></li>
-            <li><a href="./?sort=y&dr=DataScientist">Data Scientist</a></li>
-            <li><a href="./?sort=y&dr=DatabaseAdministrator">Database Administrator</a></li>
-            <li><a href="./?sort=y&dr=Designer">Designer</a></li>
-            <li><a href="./?sort=y&dr=DesktopDeveloper">Desktop Developer</a></li>
-            <li><a href="./?sort=y&dr=DevOpsDeveloper">DevOps Developer</a></li>
-            <li><a href="./?sort=y&dr=FrontendDeveloper">Frontend Developer</a></li>
-            <li><a href="./?sort=y&dr=FullStackDeveloper">Full Stack Developer</a></li>
-            <li><a href="./?sort=y&dr=GameDeveloper">Graphics/Game Developer</a></li>
-            <li><a href="./?sort=y&dr=MobileDeveloper">Mobile Developer</a></li>
-            <li><a href="./?sort=y&dr=ProductManager">Product Manager</a></li>
-            <li><a href="./?sort=y&dr=QATestDeveloper">QA/Test Developer</a></li>
-            <li><a href="./?sort=y&dr=SystemAdministrator">System Administrator</a></li>
+            <li><a href="./?sort=y&dr=BackendDeveloper">Backend Developer</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=y&dr=DataScientist">Data Scientist</a>
+                <sup><a href="./?sort=y&tl=machinelearning">machinelearning</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=DatabaseAdministrator">Database Administrator</a>
+                <sup><a href="./?sort=y&tl=mysql">mysql</a></sup>
+                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
+                <sup><a href="./?sort=y&tl=python">python</a></sup>
+                <sup><a href="./?sort=y&tl=sql">sql</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=Designer">Designer</a>
+                <sup><a href="./?sort=y&tl=userinterface">userinterface</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=DesktopDeveloper">Desktop Developer</a>
+                <sup><a href="./?sort=y&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=DevOpsDeveloper">DevOps Developer</a>
+                <sup><a href="./?sort=y&tl=amazonwebservices">amazonwebservices</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=FrontendDeveloper">Frontend Developer</a>
+                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=FullStackDeveloper">Full Stack Developer</a>
+                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=GameDeveloper">Graphics/Game Developer</a>
+                <sup><a href="./?sort=y&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=MobileDeveloper">Mobile Developer</a>
+                <sup><a href="./?sort=y&tl=android">android</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=ProductManager">Product Manager</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=QATestDeveloper">QA/Test Developer</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
+            <li><a href="./?sort=y&dr=SystemAdministrator">System Administrator</a>
+                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
+            </li>
         </ul>
         <ul>
-            <li><a href="./?sort=y&j=permanent">Permanent</a></li>
+            <li>
+                <a href="./?sort=y&j=permanent">Permanent</a>
+                <sup><a href="./?sort=y&tl=java">java</a></sup>
+            </li>
             <li><a href="./?sort=y&j=contract">Contract</a></li>
             <li><a href="./?sort=y&j=internship">Internship</a></li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&tl=javascript">JavaScript</a></li>
-            <li><a href="./?sort=y&tl=java">Java</a></li>
-            <li><a href="./?sort=y&tl=linux">Linux</a></li>
-            <li><a href="./?sort=y&tl=python">Python</a></li>
-            <li><a href="./?sort=y&tl=angularjs">AngularJS</a></li>
         </ul>
     </li>
 </ul>
