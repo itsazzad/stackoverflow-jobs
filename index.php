@@ -3,7 +3,7 @@ $num_skills = 0;
 $num_jobs = 0;
 $keys = 'category';
 $rsss = array(
-    "http://stackoverflow.com/jobs/feed?" . $_SERVER['QUERY_STRING']
+    "https://stackoverflow.com/jobs/feed?" . $_SERVER['QUERY_STRING']
 );
 $skills = array();
 $jobs = array();
@@ -63,7 +63,9 @@ function setUniqueName($subject)
 
 function getUniqueName($subject)
 {
-    return preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
+    $sub = preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
+    echo "[$subject => $sub]<br />";
+    return $sub;
 }
 
 function cmp($a, $b)
