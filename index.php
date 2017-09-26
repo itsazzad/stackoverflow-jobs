@@ -63,6 +63,14 @@ function setUniqueName($subject)
 
 function getUniqueName($subject)
 {
+    $synonyms = [
+        'js' => 'javascript',
+        'jsp' => 'jsp',
+    ];
+    if (isset($synonyms[$subject])) {
+        echo "[$subject => $synonyms[$subject]]<br />";
+        return $synonyms[$subject];
+    }
     $sub = preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
     echo "[$subject => $sub]<br />";
     return $sub;
