@@ -8,6 +8,14 @@ $rsss = array(
 $skills = array();
 $jobs = array();
 $thesaurus = array();
+$explicitParent = [
+    'javaee' => 'java',
+];
+$explicitSynonym = [
+    'js' => 'javascript',
+    'jsp' => 'jsp',
+];
+
 foreach ($rsss as $rss) {
 //	echo $rss;
 //	echo "<br />";
@@ -20,6 +28,13 @@ foreach ($rsss as $rss) {
                     $skills[$category] = $skills[$category] + 1;
                 } else {
                     $skills[$category] = 1;
+                }
+                if (!empty($explicitParent[$category])) {
+                    if (!empty($skills[$explicitParent[$category]])) {
+                        $skills[$explicitParent[$category]] = $skills[$explicitParent[$category]] + 1;
+                    } else {
+                        $skills[$explicitParent[$category]] = 1;
+                    }
                 }
                 $num_skills++;
             }
@@ -63,13 +78,11 @@ function setUniqueName($subject)
 
 function getUniqueName($subject)
 {
-    $synonyms = [
-        'js' => 'javascript',
-        'jsp' => 'jsp',
-    ];
-    if (isset($synonyms[$subject])) {
-        echo "[$subject => $synonyms[$subject]]<br />";
-        return $synonyms[$subject];
+    global $explicitSynonym;
+
+    if (isset($explicitSynonym[$subject])) {
+        echo "[$subject => $explicitSynonym[$subject]]<br />";
+        return $explicitSynonym[$subject];
     }
     $sub = preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
     echo "[$subject => $sub]<br />";
