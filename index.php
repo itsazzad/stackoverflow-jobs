@@ -81,11 +81,11 @@ function getUniqueName($subject)
     global $explicitSynonym;
 
     if (isset($explicitSynonym[$subject])) {
-        echo "[$subject => $explicitSynonym[$subject]]<br />";
+//        echo "[$subject => $explicitSynonym[$subject]]<br />";
         return $explicitSynonym[$subject];
     }
     $sub = preg_replace("/\d+$/", "", str_replace(['js', '-', '.'], "", $subject));
-    echo "[$subject => $sub]<br />";
+//    echo "[$subject => $sub]<br />";
     return $sub;
 }
 
