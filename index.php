@@ -6,6 +6,7 @@ $rsss = array(
     "https://stackoverflow.com/jobs/feed?" . $_SERVER['QUERY_STRING']
 );
 $skills = array();
+$skillsCompanies = array();
 $jobs = array();
 $thesaurus = array();
 $explicitParent = [
@@ -22,6 +23,7 @@ foreach ($rsss as $rss) {
     $file = simplexml_load_string(file_get_contents($rss));
     foreach ($file->channel->item as $i => $item) {
         if (!empty($item)) {
+            $company = (string)$item->children('a10', true)->author->children('a10', true)->name;
             foreach ($item->category as $c => $category) {
                 $category = setUniqueName((string)$category);
                 if (!empty($skills[$category])) {
@@ -29,11 +31,21 @@ foreach ($rsss as $rss) {
                 } else {
                     $skills[$category] = 1;
                 }
+                if (!empty($skillsCompanies[$category][$company])) {
+                    $skillsCompanies[$category][$company] = $skillsCompanies[$category][$company] + 1;
+                } else {
+                    $skillsCompanies[$category][$company] = 1;
+                }
                 if (!empty($explicitParent[$category])) {
                     if (!empty($skills[$explicitParent[$category]])) {
                         $skills[$explicitParent[$category]] = $skills[$explicitParent[$category]] + 1;
                     } else {
                         $skills[$explicitParent[$category]] = 1;
+                    }
+                    if (!empty($skillsCompanies[$explicitParent[$category]][$company])) {
+                        $skillsCompanies[$explicitParent[$category]][$company] = $skillsCompanies[$explicitParent[$category]][$company] + 1;
+                    } else {
+                        $skillsCompanies[$explicitParent[$category]][$company] = 1;
                     }
                 }
                 $num_skills++;
@@ -144,11 +156,14 @@ function printJobs()
 function printSkills()
 {
     global $skills;
+    global $skillsCompanies;
     global $num_skills;
     echo "[{( " . $num_skills . " )}]\n";
     foreach ($skills as $skill => $weight) {
+        $num_companies = count($skillsCompanies[$skill]);
         ?>
-        <li><a href="./?sort=y&tl=<?php echo urlencode($skill); ?>"><?php echo "[" . $skill . "] => " . $weight; ?></a>
+        <li title="<?php echo $weight ?> jobs in <?php echo $num_companies ?> companies">
+            <a href="./?sort=y&tl=<?php echo urlencode($skill); ?>"><?php echo "[" . $skill . "] => " . $weight . "/" . $num_companies; ?></a>
         </li>
         <?php
     }
