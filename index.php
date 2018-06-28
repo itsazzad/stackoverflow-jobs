@@ -3,8 +3,37 @@ $num_skills = 0;
 $num_jobs = 0;
 $keys = 'category';
 $rsss = array(
-    "https://stackoverflow.com/jobs/feed?" . $_SERVER['QUERY_STRING']
+//    "all.xml",
+//    "midlevel-manager.xml",
+//    "manager.xml",
+//    "lead.xml",
+//    "student.xml",
+//    "visa.xml",
+//    "relocation.xml",
+//    "visa-relocation.xml",
+//    "e.xml",
+//    "v.xml",
+//    "FirstApplicants.xml",
+//    "javascript.xml",
+//    "javascript-midlevel.xml",
+//    "javascript-senior.xml",
+//    "javascript-lead.xml",
+//    "javascript-manager.xml",
+//    "javascript-lead-manager.xml",
+//    "90.xml",
+//    "95.xml",
+//    "100.xml",
+//    "125e.xml",
+//    "150.xml",
+//    "200.xml",
+//    "225.xml",
+//    "250.xml",
+//    "275.xml",
+//    "300.xml",
+//    "200tve.xml",
+//    "175tve.xml",
 );
+$rsss = [$_GET["feed"].'.xml'];
 $skills = array();
 $skillsCompanies = array();
 $jobs = array();
@@ -15,15 +44,54 @@ $explicitParent = [
 $explicitSynonym = [
     'js' => 'javascript',
     'jsp' => 'jsp',
+    'aws' => 'amazonwebservices',
 ];
 
+$locations = [];
 foreach ($rsss as $rss) {
-//	echo $rss;
-//	echo "<br />";
+	echo $rss;
+	echo "<br />";
     $file = simplexml_load_string(file_get_contents($rss));
     foreach ($file->channel->item as $i => $item) {
         if (!empty($item)) {
             $company = (string)$item->children('a10', true)->author->children('a10', true)->name;
+
+            $location = array_reverse(explode(", ", $item->location));
+            foreach ($location as $key => $value) {
+                if(isset($locations[$value])){
+                    $locations[$value]++;
+                }else{
+                    $locations[$value] = 1;
+                }
+
+//                if($key == 0){//first
+//                    if ($key == (count($location)-1)){//last
+//                        if(isset($locations[$value])){
+//                            $locations[$value]++;
+//                        }else{
+//                            $locations[$value] = 1;
+//                        }
+//                        continue;
+//                    }
+////                    $loc = $location[$value];
+//                }else if ($key != (count($location)-1)){
+//                }else{//last
+//                    if(isset($locations[$value])){
+//                        $locations[$value]++;
+//                    }else{
+//                        $locations[$value] = 1;
+//                    }
+//                }
+//
+////                if(isset($locations[$value])){
+////                    if ($key == (count($location)-1)){//last
+////                        $locations[$value]++;
+////                    }
+////                }else{
+////                    $locations[$value] = [];
+////                }
+            }
+
             foreach ($item->category as $c => $category) {
                 $category = setUniqueName((string)$category);
                 if (!empty($skills[$category])) {
@@ -72,6 +140,10 @@ foreach ($rsss as $rss) {
 
 }
 
+arsort($locations);
+echo "<pre>";
+print_r($locations);
+echo "</pre>";
 function setUniqueName($subject)
 {
     global $thesaurus;
@@ -163,7 +235,7 @@ function printSkills()
         $num_companies = count($skillsCompanies[$skill]);
         ?>
         <li title="<?php echo $weight ?> jobs in <?php echo $num_companies ?> companies">
-            <a href="./?sort=y&tl=<?php echo urlencode($skill); ?>"><?php echo "[" . $skill . "] => " . $weight . "/" . $num_companies; ?></a>
+            <a href="./?sort=p&tl=<?php echo urlencode($skill); ?>"><?php echo "[" . $skill . "] => " . $weight . "/" . $num_companies; ?></a>
         </li>
         <?php
     }
@@ -200,7 +272,7 @@ function printSkills()
 <body>
 <ul>
     <li>
-        <a href="./">All</a><sup><a href="./?sort=y&tl=java">java</a></sup>
+        <a href="./">All</a><sup><a href="./?sort=p&tl=java">java</a></sup>
         <?php
         $countries = [
 //            "Afghanistan" => [],
@@ -460,11 +532,11 @@ function printSkills()
             foreach ($countries as $country => $techs) {
                 ?>
                 <li>
-                    <a href="./?sort=y&l=<?php echo $country; ?>"><?php echo $country; ?></a>
+                    <a href="./?sort=p&l=<?php echo $country; ?>"><?php echo $country; ?></a>
                     <?php
                     foreach ($techs as $tech) {
                         ?>
-                        <sup><a href="./?sort=y&tl=<?php echo urlencode($tech); ?>"><?php echo $tech; ?></a></sup>
+                        <sup><a href="./?sort=p&tl=<?php echo urlencode($tech); ?>"><?php echo $tech; ?></a></sup>
                         <?php
                     }
                     ?>
@@ -474,119 +546,119 @@ function printSkills()
             ?>
         </ul>
         <ul>
-            <li><a href="./?sort=y&s=175000&c=USD&tl=">$175,000</a></li>
+            <li><a href="./?sort=p&s=175000&c=USD&tl=">$175,000</a></li>
             <li>
-                <a href="./?sort=y&s=150000&c=USD&tl=">$150,000</a>
-                <sup><a href="./?sort=y&tl=node">node</a></sup>
-                <sup><a href="./?sort=y&tl=go">go</a></sup>
-            </li>
-            <li>
-                <a href="./?sort=y&e=True">Offers Equity</a>
-                <sup><a href="./?sort=y&tl=python">python</a></sup>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <a href="./?sort=y&r=True">Offers Remote</a>
-                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
+                <a href="./?sort=p&s=150000&c=USD&tl=">$150,000</a>
+                <sup><a href="./?sort=p&tl=node">node</a></sup>
+                <sup><a href="./?sort=p&tl=go">go</a></sup>
             </li>
             <li>
-                <a href="./?sort=y&v=True">Visa Sponsorship</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
-            </li>
-            <li>
-                <a href="./?sort=y&t=True">Offers Relocation</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&ms=Student&mxs=Student"><strong>Student</strong></a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Junior">Student ⋯ Junior</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=MidLevel">Student ⋯ MidLevel</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Senior">Student ⋯ Senior</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Lead">Student ⋯ Lead</a></li>
-            <li><a href="./?sort=y&ms=Student&mxs=Manager">Student ⋯ Manager</a></li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&ms=Junior&mxs=Junior"><strong>Junior</strong></a></li>
-            <li><a href="./?sort=y&ms=Junior&mxs=MidLevel">Junior ⋯ MidLevel</a></li>
-            <li><a href="./?sort=y&ms=Junior&mxs=Senior">Junior ⋯ Senior</a></li>
-            <li><a href="./?sort=y&ms=Junior&mxs=Lead">Junior ⋯ Lead</a></li>
-            <li><a href="./?sort=y&ms=Junior&mxs=Manager">Junior ⋯ Manager</a></li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&ms=MidLevel&mxs=MidLevel"><strong>MidLevel</strong></a></li>
-            <li><a href="./?sort=y&ms=MidLevel&mxs=Senior">MidLevel ⋯ Senior</a></li>
-            <li><a href="./?sort=y&ms=MidLevel&mxs=Lead">MidLevel ⋯ Lead</a></li>
-            <li><a href="./?sort=y&ms=MidLevel&mxs=Manager">MidLevel ⋯ Manager</a></li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&ms=Senior&mxs=Senior"><strong>Senior</strong></a></li>
-            <li><a href="./?sort=y&ms=Senior&mxs=Lead">Senior ⋯ Lead</a></li>
-            <li><a href="./?sort=y&ms=Senior&mxs=Manager">Senior ⋯ Manager</a></li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&ms=Lead&mxs=Lead"><strong>Lead</strong></a></li>
-            <li><a href="./?sort=y&ms=Lead&mxs=Manager">Lead ⋯ Manager</a></li>
-        </ul>
-        <ul>
-            <li>
-                <a href="./?sort=y&ms=Manager&mxs=Manager"><strong>Manager</strong></a>
-                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
-            </li>
-        </ul>
-        <ul>
-            <li><a href="./?sort=y&dr=BackendDeveloper">Backend Developer</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
-            </li>
-            <li>
-                <a href="./?sort=y&dr=DataScientist">Data Scientist</a>
-                <sup><a href="./?sort=y&tl=machinelearning">machinelearning</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=DatabaseAdministrator">Database Administrator</a>
-                <sup><a href="./?sort=y&tl=mysql">mysql</a></sup>
-                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
-                <sup><a href="./?sort=y&tl=python">python</a></sup>
-                <sup><a href="./?sort=y&tl=sql">sql</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=Designer">Designer</a>
-                <sup><a href="./?sort=y&tl=userinterface">userinterface</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=DesktopDeveloper">Desktop Developer</a>
-                <sup><a href="./?sort=y&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=DevOpsDeveloper">DevOps Developer</a>
-                <sup><a href="./?sort=y&tl=amazonwebservices">amazonwebservices</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=FrontendDeveloper">Frontend Developer</a>
-                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=FullStackDeveloper">Full Stack Developer</a>
-                <sup><a href="./?sort=y&tl=javascript">javascript</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=GameDeveloper">Graphics/Game Developer</a>
-                <sup><a href="./?sort=y&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=MobileDeveloper">Mobile Developer</a>
-                <sup><a href="./?sort=y&tl=android">android</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=ProductManager">Product Manager</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=QATestDeveloper">QA/Test Developer</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
-            </li>
-            <li><a href="./?sort=y&dr=SystemAdministrator">System Administrator</a>
-                <sup><a href="./?sort=y&tl=linux">linux</a></sup>
+                <a href="./?sort=p&e=True">Offers Equity</a>
+                <sup><a href="./?sort=p&tl=python">python</a></sup>
             </li>
         </ul>
         <ul>
             <li>
-                <a href="./?sort=y&j=permanent">Permanent</a>
-                <sup><a href="./?sort=y&tl=java">java</a></sup>
+                <a href="./?sort=p&r=True">Offers Remote</a>
+                <sup><a href="./?sort=p&tl=linux">linux</a></sup>
             </li>
-            <li><a href="./?sort=y&j=contract">Contract</a></li>
-            <li><a href="./?sort=y&j=internship">Internship</a></li>
+            <li>
+                <a href="./?sort=p&v=True">Visa Sponsorship</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=p&t=True">Offers Relocation</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&ms=Student&mxs=Student"><strong>Student</strong></a></li>
+            <li><a href="./?sort=p&ms=Student&mxs=Junior">Student ⋯ Junior</a></li>
+            <li><a href="./?sort=p&ms=Student&mxs=MidLevel">Student ⋯ MidLevel</a></li>
+            <li><a href="./?sort=p&ms=Student&mxs=Senior">Student ⋯ Senior</a></li>
+            <li><a href="./?sort=p&ms=Student&mxs=Lead">Student ⋯ Lead</a></li>
+            <li><a href="./?sort=p&ms=Student&mxs=Manager">Student ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&ms=Junior&mxs=Junior"><strong>Junior</strong></a></li>
+            <li><a href="./?sort=p&ms=Junior&mxs=MidLevel">Junior ⋯ MidLevel</a></li>
+            <li><a href="./?sort=p&ms=Junior&mxs=Senior">Junior ⋯ Senior</a></li>
+            <li><a href="./?sort=p&ms=Junior&mxs=Lead">Junior ⋯ Lead</a></li>
+            <li><a href="./?sort=p&ms=Junior&mxs=Manager">Junior ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&ms=MidLevel&mxs=MidLevel"><strong>MidLevel</strong></a></li>
+            <li><a href="./?sort=p&ms=MidLevel&mxs=Senior">MidLevel ⋯ Senior</a></li>
+            <li><a href="./?sort=p&ms=MidLevel&mxs=Lead">MidLevel ⋯ Lead</a></li>
+            <li><a href="./?sort=p&ms=MidLevel&mxs=Manager">MidLevel ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&ms=Senior&mxs=Senior"><strong>Senior</strong></a></li>
+            <li><a href="./?sort=p&ms=Senior&mxs=Lead">Senior ⋯ Lead</a></li>
+            <li><a href="./?sort=p&ms=Senior&mxs=Manager">Senior ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&ms=Lead&mxs=Lead"><strong>Lead</strong></a></li>
+            <li><a href="./?sort=p&ms=Lead&mxs=Manager">Lead ⋯ Manager</a></li>
+        </ul>
+        <ul>
+            <li>
+                <a href="./?sort=p&ms=Manager&mxs=Manager"><strong>Manager</strong></a>
+                <sup><a href="./?sort=p&tl=javascript">javascript</a></sup>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="./?sort=p&dr=BackendDeveloper">Backend Developer</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+            <li>
+                <a href="./?sort=p&dr=DataScientist">Data Scientist</a>
+                <sup><a href="./?sort=p&tl=machinelearning">machinelearning</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=DatabaseAdministrator">Database Administrator</a>
+                <sup><a href="./?sort=p&tl=mysql">mysql</a></sup>
+                <sup><a href="./?sort=p&tl=linux">linux</a></sup>
+                <sup><a href="./?sort=p&tl=python">python</a></sup>
+                <sup><a href="./?sort=p&tl=sql">sql</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=Designer">Designer</a>
+                <sup><a href="./?sort=p&tl=userinterface">userinterface</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=DesktopDeveloper">Desktop Developer</a>
+                <sup><a href="./?sort=p&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=DevOpsDeveloper">DevOps Developer</a>
+                <sup><a href="./?sort=p&tl=amazonwebservices">amazonwebservices</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=FrontendDeveloper">Frontend Developer</a>
+                <sup><a href="./?sort=p&tl=javascript">javascript</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=FullStackDeveloper">Full Stack Developer</a>
+                <sup><a href="./?sort=p&tl=javascript">javascript</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=GameDeveloper">Graphics/Game Developer</a>
+                <sup><a href="./?sort=p&tl=<?php echo urlencode('c++'); ?>">c++</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=MobileDeveloper">Mobile Developer</a>
+                <sup><a href="./?sort=p&tl=android">android</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=ProductManager">Product Manager</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=QATestDeveloper">QA/Test Developer</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+            <li><a href="./?sort=p&dr=SystemAdministrator">System Administrator</a>
+                <sup><a href="./?sort=p&tl=linux">linux</a></sup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="./?sort=p&j=permanent">Permanent</a>
+                <sup><a href="./?sort=p&tl=java">java</a></sup>
+            </li>
+            <li><a href="./?sort=p&j=contract">Contract</a></li>
+            <li><a href="./?sort=p&j=internship">Internship</a></li>
         </ul>
     </li>
 </ul>
